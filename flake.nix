@@ -18,28 +18,7 @@
             kubectl
             kubernetes-helm
           ];
-          shellHook = ''
-            if ! minikube status | grep -q "Running"; then
-              echo "Starting minikube..."
-              minikube start
-            else
-              echo "Minikube is already running."
-            fi
-
-            if ! minikube addons list | grep -q "dashboard.*enabled"; then
-              echo "Enabling Kubernetes Dashboard..."
-              minikube addons enable dashboard
-            else
-              echo "Kubernetes Dashboard is already enabled."
-            fi
-
-            if ! minikube addons list | grep -q "metrics-server.*enabled"; then
-              echo "Enabling Metrics Server..."
-              minikube addons enable metrics-server
-            else
-              echo "Metrics Server is already enabled."
-            fi
-          '';
+          shellHook = builtins.readFile ./scripts/setup.sh;
         };
       }
     );
