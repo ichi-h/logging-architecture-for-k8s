@@ -49,6 +49,14 @@
             else
               echo "metrics-server is already enabled."
             fi
+
+            if ! kubectl get nodes | grep -q "monitoring"; then
+              echo "Creating monitoring node..."
+              minikube node add --name=monitoring
+              kubectl label nodes monitoring app=monitoring
+            else
+              echo "monitoring node already exists."
+            fi
           '';
         };
       }

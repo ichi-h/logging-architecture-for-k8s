@@ -22,6 +22,8 @@ releases:
         value: 1
       - name: loki.useTestSchema
         value: true
+      - name: nodeSelector.app
+        value: monitoring
   - name: grafana
     namespace: monitoring
     chart: grafana/grafana
@@ -29,3 +31,5 @@ releases:
     set:
       - name: service.type
         value: NodePort
+      - name: nodeSelector.app
+        value: monitoring
