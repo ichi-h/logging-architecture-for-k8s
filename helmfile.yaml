@@ -36,7 +36,7 @@ releases:
       - name: nodeSelector.role
         value: monitoring
   - name: kubernetes-dashboard
-    namespace: kubernetes-dashboard
+    namespace: admin
     chart: kubernetes-dashboard/kubernetes-dashboard
     version: 7.13.0
     set:
