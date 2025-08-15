@@ -18,7 +18,11 @@ nix develop
 - Container
   - Docker
 - Orchestration
-  - Kubernetes (minikube)
+  - Kubernetes (kind)
+- Package Manager
+  - Nix
+  - Helm
+  - Helmfile
 - Demo Application
   - Golang
 - Log Collection
