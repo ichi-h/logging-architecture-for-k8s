@@ -6,11 +6,11 @@
 nix develop
 ./scripts/deploy.sh
 
-# launch k8s dashboard
+# access dashboard
 ./scripts/dashboard.sh
 
-# get grafana origin
-./scripts/get-grafana-origin.sh
+# access grafana
+./scripts/grafana.sh
 ```
 
 ## Technology Stack
