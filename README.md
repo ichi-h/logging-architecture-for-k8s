@@ -1,5 +1,13 @@
 # logging-architecture-for-k8s
 
+## Setup
+
+```sh
+nix develop
+./scripts/deploy.sh
+./scripts/dashboard.sh
+```
+
 ## Technology Stack
 
 - Container
