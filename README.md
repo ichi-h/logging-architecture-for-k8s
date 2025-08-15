@@ -5,7 +5,12 @@
 ```sh
 nix develop
 ./scripts/deploy.sh
+
+# launch k8s dashboard
 ./scripts/dashboard.sh
+
+# get grafana origin
+./scripts/get-grafana-origin.sh
 ```
 
 ## Technology Stack
