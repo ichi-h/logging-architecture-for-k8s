@@ -28,4 +28,4 @@ releases:
     version: 9.3.2
     set:
       - name: service.type
-        value: LoadBalancer
+        value: NodePort
