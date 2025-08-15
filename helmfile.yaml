@@ -1,0 +1,31 @@
+repositories:
+  - name: grafana
+    url: https://grafana.github.io/helm-charts
+
+releases:
+  - name: loki
+    namespace: monitoring
+    chart: grafana/loki
+    version: 6.36.0
+    set:
+      - name: minio.enabled
+        value: true
+      - name: write.replicas
+        value: 1
+      - name: read.replicas
+        value: 1
+      - name: backend.replicas
+        value: 1
+      - name: loki.auth_enabled
+        value: false
+      - name: loki.commonConfig.replication_factor
+        value: 1
+      - name: loki.useTestSchema
+        value: true
+  - name: grafana
+    namespace: monitoring
+    chart: grafana/grafana
+    version: 9.3.2
+    set:
+      - name: service.type
+        value: LoadBalancer
