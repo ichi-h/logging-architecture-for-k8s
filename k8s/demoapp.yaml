@@ -3,21 +3,23 @@ kind: Deployment
 metadata:
   name: demoapp
   labels:
-    app: demoapp
+    role: app
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: demoapp
+      role: app
   template:
     metadata:
       labels:
-        app: demoapp
+        role: app
     spec:
+      nodeSelector:
+        role: app
       containers:
         - name: demoapp
-          image: docker.io/library/demoapp:latest
-          imagePullPolicy: Never # pull image from local registry
+          image: demoapp:latest
+          imagePullPolicy: Never # use local image
           resources:
             limits:
               cpu: "100m"

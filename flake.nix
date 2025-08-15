@@ -23,39 +23,17 @@
       {
         devShells.default = pkgs.mkShell {
           packages = with pkgs; [
-            minikube
+            kind
             kubectl
             kubernetes-helm-wrapped
             helmfile-wrapped
           ];
           shellHook = ''
-            if ! minikube status | grep -q "Running"; then
-              echo "Starting minikube..."
-              minikube start
+            if ! kind get clusters | grep -q '^kind$'; then
+              echo "Creating kind cluster..."
+              kind create cluster --config kind-config.yaml
             else
-              echo "minikube is already running."
-            fi
-
-            if ! minikube addons list | grep -q "dashboard.*enabled"; then
-              echo "Enabling dashboard..."
-              minikube addons enable dashboard
-            else
-              echo "dashboard is already enabled."
-            fi
-
-            if ! minikube addons list | grep -q "metrics-server.*enabled"; then
-              echo "Enabling metrics-server..."
-              minikube addons enable metrics-server
-            else
-              echo "metrics-server is already enabled."
-            fi
-
-            if ! kubectl get nodes | grep -q "monitoring"; then
-              echo "Creating monitoring node..."
-              minikube node add --name=monitoring
-              kubectl label nodes monitoring app=monitoring
-            else
-              echo "monitoring node already exists."
+              echo "Kind cluster 'kind' already exists."
             fi
           '';
         };

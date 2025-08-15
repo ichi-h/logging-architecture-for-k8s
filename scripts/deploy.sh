@@ -1,6 +1,6 @@
 docker build -t demoapp ./app/
-minikube image load demoapp:latest
-
-helmfile apply
+kind load docker-image demoapp:latest
 
 kubectl apply -f ./k8s/
+
+helmfile apply
