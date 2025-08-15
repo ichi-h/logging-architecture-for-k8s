@@ -10,4 +10,6 @@ if [ -z "$ipaddress" ]; then
   exit 1
 fi
 
-echo "Grafana is available at http://$ipaddress:$port"
+echo Origin: http://$ipaddress:$port
+echo Username: admin
+echo Password: $(kubectl get secret --namespace monitoring grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo)
