@@ -16,17 +16,33 @@ releases:
           enabled: true
         write:
           replicas: 1
+          nodeSelector:
+            role: monitoring
         read:
           replicas: 1
+          nodeSelector:
+            role: monitoring
         backend:
           replicas: 1
+          nodeSelector:
+            role: monitoring
+        resultsCache:
+          nodeSelector:
+            role: monitoring
+        gateway:
+          nodeSelector:
+            role: monitoring
+        lokiCanary:
+          nodeSelector:
+            role: monitoring
+        chunksCache:
+          nodeSelector:
+            role: monitoring
         loki:
           auth_enabled: false
           commonConfig:
             replication_factor: 1
           useTestSchema: true
-        nodeSelector:
-          role: monitoring
   - name: grafana
     namespace: monitoring
     chart: grafana/grafana
@@ -43,8 +59,22 @@ releases:
     values:
       - service:
           type: NodePort
-        nodeSelector:
-          role: admin
+        app:
+          scheduling:
+            nodeSelector:
+              role: admin
+        auth:
+          nodeSelector:
+            role: admin
+        api:
+          nodeSelector:
+            role: admin
+        web:
+          nodeSelector:
+            role: admin
+        metricsScraper:
+          nodeSelector:
+            role: admin
   - name: vector
     chart: vector/vector
     version: 0.45.0
