@@ -11,41 +11,40 @@ releases:
     namespace: monitoring
     chart: grafana/loki
     version: 6.36.0
-    set:
-      - name: minio.enabled
-        value: true
-      - name: write.replicas
-        value: 1
-      - name: read.replicas
-        value: 1
-      - name: backend.replicas
-        value: 1
-      - name: loki.auth_enabled
-        value: false
-      - name: loki.commonConfig.replication_factor
-        value: 1
-      - name: loki.useTestSchema
-        value: true
-      - name: nodeSelector.role
-        value: monitoring
+    values:
+      - minio:
+          enabled: true
+        write:
+          replicas: 1
+        read:
+          replicas: 1
+        backend:
+          replicas: 1
+        loki:
+          auth_enabled: false
+          commonConfig:
+            replication_factor: 1
+          useTestSchema: true
+        nodeSelector:
+          role: monitoring
   - name: grafana
     namespace: monitoring
     chart: grafana/grafana
     version: 9.3.2
-    set:
-      - name: service.type
-        value: NodePort
-      - name: nodeSelector.role
-        value: monitoring
+    values:
+      - service:
+          type: NodePort
+        nodeSelector:
+          role: monitoring
   - name: kubernetes-dashboard
     namespace: admin
     chart: kubernetes-dashboard/kubernetes-dashboard
     version: 7.13.0
-    set:
-      - name: service.type
-        value: NodePort
-      - name: nodeSelector.role
-        value: admin
+    values:
+      - service:
+          type: NodePort
+        nodeSelector:
+          role: admin
   - name: vector
     chart: vector/vector
     version: 0.45.0
