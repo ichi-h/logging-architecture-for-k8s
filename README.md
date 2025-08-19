@@ -6,10 +6,12 @@
 nix develop
 ./scripts/deploy.sh
 
-# access dashboard
+# Access Kubernetes Dashboard
 ./scripts/dashboard.sh
 
-# access grafana
+# Access Grafana
+# If you want to use dashboards for the demo application and node-exporter-full,
+# you need to import `grafana/*-dashboard.json` files from the Grafana dashboards page.
 ./scripts/grafana.sh
 ```
 
@@ -18,7 +20,8 @@ nix develop
 - Container
   - Docker
 - Orchestration
-  - Kubernetes (kind)
+  - Kubernetes
+  - kind
 - Package Manager
   - Nix
   - Helm
@@ -36,59 +39,34 @@ nix develop
 - Object Storage
   - MinIO
 
-## Directory Structure
-
-```
-/
-├── README.md
-├── app/                # Demo application source code
-├── vector/             # vector settings
-├── loki/               # Loki settings
-├── prometheus/         # Prometheus settings
-├── grafana/            # Grafana settings
-├── minio/              # MinIO settings
-├── k8s/                # Kubernetes manifests (deployment, DaemonSet, etc. for each component)
-└── scripts/            # Verification and setup scripts
-```
-
 ## Architecture Diagram
 
 ```mermaid
 graph TD
-  subgraph MonitoringNode
+  subgraph Monitoring
     Grafana
     Prometheus
     Loki
-    MonVector["Vector (DaemonSet)"]
-  end
-
-  subgraph AppNode
-    App
-    AppVector["Vector (DaemonSet)"]
-  end
-
-  subgraph StorageNode
     MinIO
-    StorVector["Vector (DaemonSet)"]
+  end
+
+  subgraph App
+    DemoApp
+    AppVector["Vector (DaemonSet)"]
+    AppExporter["Node Exporter (DaemonSet)"]
   end
 
   %% Log flow
-  App -->|stdout/stderr| AppVector -->|push logs| Loki
-  Grafana -->|stdout/stderr| MonVector -->|push logs| Loki
-  Prometheus -->|stdout/stderr| MonVector
-  Loki -->|stdout/stderr| MonVector
-  MinIO -->|stdout/stderr| StorVector -->|push logs| Loki
+  AppVector -->|collect stdout| DemoApp
+  AppVector -->|push logs| Loki
 
   %% Metrics flow
-  Prometheus -->|pull metrics| AppVector
-  Prometheus -->|pull metrics| MonVector
-  Prometheus -->|pull metrics| StorVector
+  Prometheus -->|pull metrics| AppExporter
 
   %% Query
   Grafana -->|query logs| Loki
   Grafana -->|query metrics| Prometheus
 
-  %% Store
+  %% Storage
   Loki -->|store logs| MinIO
-  Prometheus -->|store metrics| MinIO
 ```
